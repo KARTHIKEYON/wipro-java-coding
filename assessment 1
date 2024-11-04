@@ -1,0 +1,52 @@
+import java.util.Scanner;
+
+public class PlaceholderReplacer {
+
+    public static String replacePlaceholders(String template, String hostname, String ipAddress) {
+        return template.replace("{hostname}", hostname).replace("{ip_address}", ipAddress);
+    }
+
+    public static boolean isValidIP(String ipAddress) {
+        String[] parts = ipAddress.split("\\.");
+        if (parts.length != 4) return false;
+
+        for (String part : parts) {
+            try {
+                int num = Integer.parseInt(part);
+                if (num < 0 || num > 255) return false;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isValidHostname(String hostname) {
+        // Only letters, numbers, dots, and hyphens allowed in hostname
+        return hostname.matches("[a-zA-Z0-9.-]+");
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter hostname: ");
+        String hostname = scanner.nextLine().trim();
+        if (!isValidHostname(hostname)) {
+            System.out.println("Error: Invalid hostname. Use only letters, numbers, dots, or hyphens.");
+            return;
+        }
+
+        System.out.print("Enter IP address: ");
+        String ipAddress = scanner.nextLine().trim();
+        if (!isValidIP(ipAddress)) {
+            System.out.println("Error: Invalid IP address. Format should be x.x.x.x where each x is 0-255.");
+            return;
+        }
+
+        String template = "Connect to {hostname} at {ip_address}";
+        String result = replacePlaceholders(template, hostname, ipAddress);
+        System.out.println(result);
+
+        scanner.close();
+    }
+}
