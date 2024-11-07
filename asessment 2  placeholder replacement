@@ -1,0 +1,23 @@
+def replace_placeholders(template: str, placeholders: dict) -> str:
+    missing_placeholders = []
+    for key in placeholders.keys():
+        template = template.replace(f"{{{{ {key} }}}}", placeholders[key])
+    
+for part in template.split("{{"):
+        if "}}" in part:
+            missing_key = part.split("}}")[0].strip()
+            if missing_key and missing_key not in placeholders:
+                missing_placeholders.append(missing_key)
+    
+    return template, missing_placeholders
+if _name_ == "_main_":
+    template = input("Enter the template string (use {{ placeholder_name }} for placeholders): ")
+    placeholders = {}
+    while True:
+        key = input("Enter placeholder name (or 'done' to finish): ")
+        if key.lower() == 'done':
+            break
+        value = input(f"Enter value for '{key}': ")
+        placeholders[key] = value
+   
+
